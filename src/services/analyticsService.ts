@@ -12,6 +12,7 @@ export type AnalyticsEvent =
   | "LOGIN_FAILED"
   | "REGISTRATION_STARTED"
   | "REGISTRATION_SUCCESS"
+  | "REGISTRATION_FAILED"
   | "LOGOUT"
   | "WISHLIST_ADDED"
   | "WISHLIST_REMOVED"
@@ -41,6 +42,7 @@ export type AnalyticsPayload = {
   LOGIN_FAILED: { code: string }
   REGISTRATION_STARTED: Record<string, never>
   REGISTRATION_SUCCESS: { userId: string }
+  REGISTRATION_FAILED: { code: string }
   LOGOUT: { userId?: string }
   WISHLIST_ADDED: { productId: string; variantId?: string }
   WISHLIST_REMOVED: { productId: string; variantId?: string }

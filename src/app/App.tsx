@@ -8,6 +8,8 @@ import BrandDirectoryPage from "../pages/BrandDirectoryPage";
 import BrandPage from "../pages/BrandPage";
 import ProductPage from "../pages/ProductPage";
 import CategoryLandingPage from "../pages/CategoryLandingPage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 import WishlistPage from "../pages/WishlistPage";
 import CartPage from "../pages/CartPage";
 import {
@@ -55,11 +57,8 @@ export default function App() {
             element={<Placeholder title="Notifications" />}
           />
           <Route path="/help" element={<Help />} />
-          <Route path="/login" element={<Account />} />
-          <Route
-            path="/register"
-            element={<Placeholder title="Create Account" />}
-          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route
             path="/forgot-password"
             element={<Placeholder title="Forgot Password" />}
