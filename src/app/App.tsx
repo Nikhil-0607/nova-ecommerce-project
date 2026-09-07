@@ -15,11 +15,12 @@ import AccountPage from "../pages/AccountPage";
 import AccountAddressesPage from "../pages/AccountAddressesPage";
 import WishlistPage from "../pages/WishlistPage";
 import CartPage from "../pages/CartPage";
+import CheckoutPage from "../pages/CheckoutPage";
+import OrdersPage from "../pages/OrdersPage";
+import OrderDetailPage from "../pages/OrderDetailPage";
 import {
-  Checkout,
   Offers,
   Account,
-  Orders,
   Help,
   Seller,
   Admin,
@@ -45,16 +46,16 @@ export default function App() {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/brands" element={<BrandDirectoryPage />} />
           <Route path="/brand/:brandId" element={<BrandPage />} />
           <Route path="/account/addresses" element={<ProtectedRoute><AccountAddressesPage /></ProtectedRoute>} />
           <Route path="/account/*" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
-          <Route path="/orders" element={<Orders />} />
+          <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
           <Route
             path="/orders/:orderId"
-            element={<Placeholder title="Order Details" />}
+            element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>}
           />
           <Route
             path="/notifications"

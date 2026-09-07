@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom"
 const sections = [
   { to: "/account", label: "Profile", end: true },
   { to: "/account/addresses", label: "Addresses" },
+  { to: "/orders", label: "Orders" },
   { to: "/account/security", label: "Security" },
   { to: "/account/preferences", label: "Preferences" },
   { to: "/account/notifications", label: "Notifications" },

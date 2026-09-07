@@ -98,25 +98,6 @@ export function Account() {
     </section>
   );
 }
-export function Orders() {
-  return (
-    <section className="section container">
-      <h1>Orders</h1>
-      {["NV10234", "NV10211", "NV10198"].map((id, i) => (
-        <div className="order-card" key={id}>
-          <div>
-            <b>Order #{id}</b>
-            <p>
-              {i + 1} Items · ₹{(3499 + i * 700).toLocaleString()}
-            </p>
-          </div>
-          <span className="status">Delivered</span>
-          <Link to={`/orders/${id}`}>VIEW DETAILS →</Link>
-        </div>
-      ))}
-    </section>
-  );
-}
 export function Help() {
   return (
     <section className="section container">
