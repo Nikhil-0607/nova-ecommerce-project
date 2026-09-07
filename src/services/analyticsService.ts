@@ -47,6 +47,12 @@ export type AnalyticsEvent =
   | "ADDRESS_DELETE_SUCCESS"
   | "ADDRESS_DELETE_FAILED"
   | "ADDRESS_DEFAULT_SET"
+  | "WISHLIST_VIEWED"
+  | "WISHLIST_ITEM_ADDED"
+  | "WISHLIST_ITEM_REMOVED"
+  | "WISHLIST_CLEARED"
+  | "WISHLIST_MERGED"
+  | "WISHLIST_MERGE_FAILED"
 
 export type AnalyticsPayload = {
   PRODUCT_VIEWED: { productId: string }
@@ -97,6 +103,12 @@ export type AnalyticsPayload = {
   ADDRESS_DELETE_SUCCESS: { addressId: string }
   ADDRESS_DELETE_FAILED: { addressId: string; code: string }
   ADDRESS_DEFAULT_SET: { addressId: string }
+  WISHLIST_VIEWED: Record<string, never>
+  WISHLIST_ITEM_ADDED: { productId: string; variantId?: string }
+  WISHLIST_ITEM_REMOVED: { productId: string; variantId?: string }
+  WISHLIST_CLEARED: Record<string, never>
+  WISHLIST_MERGED: { itemCount: number }
+  WISHLIST_MERGE_FAILED: { code: string }
 }
 
 export const analytics = {

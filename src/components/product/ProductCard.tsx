@@ -4,12 +4,13 @@ import { useStore } from "../../context/StoreContext";
 import ProductBadge from "./ProductBadge";
 import ProductPrice from "./ProductPrice";
 import ProductRating from "./ProductRating";
+import { getWishlistItemKey } from "../../utils/wishlistIdentity";
 
 export default function ProductCard({ product }: { product: Product }) {
   const { wishlist, toggleWishlist, addToCart, notify } = useStore();
   const navigate = useNavigate();
 
-  const liked = wishlist.some((x) => x.id === product.id);
+  const liked = wishlist.some((x) => getWishlistItemKey(x.id, x.selectedVariant?.id) === getWishlistItemKey(product.id, product.selectedVariant?.id));
   const isOutOfStock = product.stockStatus === "out-of-stock";
   const isLowStock = product.stockStatus === "low-stock";
   const isComingSoon = product.stockStatus === "coming-soon";

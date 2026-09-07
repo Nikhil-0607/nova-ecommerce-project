@@ -18,6 +18,7 @@ import RecentlyViewedSection from "../components/recommendation/RecentlyViewedSe
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed"
 import { recommendationService } from "../services/recommendationService"
 import SEO from "../components/seo/SEO"
+import { getWishlistItemKey } from "../utils/wishlistIdentity"
 
 export default function ProductPage() {
   const { productId = "" } = useParams()
@@ -66,8 +67,9 @@ export default function ProductPage() {
   if (error) return <><SEO title="Product unavailable | NOVA" description="This product is temporarily unavailable." robots="noindex,follow" /><section className="section container"><div className="empty" role="alert"><h1>Unable to load product</h1><p>Please try again shortly.</p></div></section></>
   if (!product) return <><SEO title="Product not found | NOVA" description="This product is not available." robots="noindex,follow" /><section className="section container"><div className="empty"><h1>Product not found</h1><p>This product may no longer be available.</p></div></section></>
 
-  const liked = wishlist.some((item) => item.id === product.id)
   const activeVariant = selectedVariant
+  const wishlistKey = getWishlistItemKey(product.id, activeVariant?.id)
+  const liked = wishlist.some((item) => getWishlistItemKey(item.id, item.selectedVariant?.id) === wishlistKey)
   const displayPrice = activeVariant?.price ?? product.price
   const displayStock = activeVariant?.stockStatus ?? product.stockStatus
   const hasRequiredVariant = product.variants.length === 0 || Boolean(activeVariant)
@@ -136,7 +138,7 @@ export default function ProductPage() {
           {selectionError && <p className="selection-error" role="alert">{selectionError}</p>}
           <div className="pdp-actions">
             {displayStock === "out-of-stock" ? <button className="btn" onClick={() => notify(`We'll notify you when ${product.name} is back.`)}>NOTIFY ME</button> : <button className="btn" onClick={addToBag} disabled={displayStock === "coming-soon"}>{displayStock === "coming-soon" ? "COMING SOON" : "ADD TO BAG"}</button>}
-            <button className="btn secondary" onClick={() => toggleWishlist(product)}>{liked ? "♥ WISHLISTED" : "♡ WISHLIST"}</button>
+            <button className="btn secondary" aria-pressed={liked} onClick={() => toggleWishlist(activeVariant ? { ...product, selectedVariant: activeVariant } : product)}>{liked ? "♥ WISHLISTED" : "♡ WISHLIST"}</button>
           </div>
           <DeliveryChecker productId={product.id} />
           <div className="details">
