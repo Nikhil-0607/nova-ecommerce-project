@@ -7,18 +7,24 @@ import { useStore } from "../context/StoreContext"
 import { analytics } from "../services/analyticsService"
 import { authService } from "../services/authService"
 import type { ApiError } from "../types/api"
+import { getSafeInternalRedirect } from "../utils/authRedirect"
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const safeRedirect = (value: string | null): string => value?.startsWith("/") && !value.startsWith("//") && !value.includes(":") ? value : "/"
-
 export default function RegisterPage() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
-  const { login, notify } = useStore()
+  const { login, notify, authStatus } = useStore()
   const [values, setValues] = useState<RegisterFormValues>({ firstName: "", lastName: "", email: "", password: "", confirmPassword: "", acceptedTerms: false })
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormValues, string>>>({})
   const [serverError, setServerError] = useState("")
   const [submitting, setSubmitting] = useState(false)
+
+  if (authStatus === "loading") {
+    return <AuthLayout title="Checking your session"><p className="auth-intro">Please wait while we restore your session.</p></AuthLayout>
+  }
+  if (authStatus === "authenticated") {
+    return <AuthLayout title="Already signed in"><p className="auth-intro">You are already signed in to NOVA.</p><button className="btn full" type="button" onClick={() => navigate(getSafeInternalRedirect(params.get("redirect"), "/account"), { replace: true })}>CONTINUE</button></AuthLayout>
+  }
 
   const submit = async () => {
     const nextErrors: Partial<Record<keyof RegisterFormValues, string>> = {}
@@ -35,10 +41,10 @@ export default function RegisterPage() {
     setSubmitting(true)
     try {
       const result = await authService.register({ firstName: values.firstName.trim(), lastName: values.lastName.trim(), email: values.email.trim() })
-      login()
+      login(result.user)
       analytics.track("REGISTRATION_SUCCESS", { userId: result.user.id })
       notify("Your NOVA account is ready")
-      navigate(safeRedirect(params.get("redirect")), { replace: true })
+      navigate(getSafeInternalRedirect(params.get("redirect"), "/account"), { replace: true })
     } catch (error) {
       const apiError = error as Partial<ApiError>
       setServerError(apiError.code === "VALIDATION_ERROR" ? "Please check your details and try again." : "We couldn't create your account. Please try again.")

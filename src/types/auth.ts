@@ -22,6 +22,11 @@ export type AuthState = {
   sessionStatus: SessionStatus
 }
 
+export type Session = {
+  user: User
+  expiresAt?: string
+}
+
 export type LoginCredentials = {
   email: string
   password: string

@@ -90,7 +90,7 @@ export function Account() {
       ) : (
         <div className="panel">
           <h2>Sign in to continue</h2>
-          <button className="btn" onClick={login}>
+          <button className="btn" onClick={() => login()}>
             MOCK LOGIN
           </button>
         </div>

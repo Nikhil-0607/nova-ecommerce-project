@@ -10,6 +10,7 @@ import ProductPage from "../pages/ProductPage";
 import CategoryLandingPage from "../pages/CategoryLandingPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
 import WishlistPage from "../pages/WishlistPage";
 import CartPage from "../pages/CartPage";
 import {
@@ -46,7 +47,7 @@ export default function App() {
           <Route path="/offers" element={<Offers />} />
           <Route path="/brands" element={<BrandDirectoryPage />} />
           <Route path="/brand/:brandId" element={<BrandPage />} />
-          <Route path="/account/*" element={<Account />} />
+          <Route path="/account/*" element={<ProtectedRoute><Account /></ProtectedRoute>} />
           <Route path="/orders" element={<Orders />} />
           <Route
             path="/orders/:orderId"

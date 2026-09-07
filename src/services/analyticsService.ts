@@ -27,6 +27,11 @@ export type AnalyticsEvent =
   | "ADDRESS_DELETED"
   | "PROFILE_UPDATED"
   | "PASSWORD_CHANGED"
+  | "SESSION_RESTORED"
+  | "LOGOUT_STARTED"
+  | "LOGOUT_SUCCESS"
+  | "LOGOUT_FAILED"
+  | "PROTECTED_ROUTE_REDIRECTED"
 
 export type AnalyticsPayload = {
   PRODUCT_VIEWED: { productId: string }
@@ -57,6 +62,11 @@ export type AnalyticsPayload = {
   ADDRESS_DELETED: { addressId: string }
   PROFILE_UPDATED: { userId: string }
   PASSWORD_CHANGED: { userId: string }
+  SESSION_RESTORED: { authenticated: boolean }
+  LOGOUT_STARTED: Record<string, never>
+  LOGOUT_SUCCESS: Record<string, never>
+  LOGOUT_FAILED: { code: string }
+  PROTECTED_ROUTE_REDIRECTED: { path: string }
 }
 
 export const analytics = {

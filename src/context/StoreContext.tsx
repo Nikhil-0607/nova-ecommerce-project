@@ -1,11 +1,16 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
 import type { Product } from "../types/product";
+import type { User, SessionStatus } from "../types/auth";
+import { sessionService } from "../services/sessionService";
+import { authService } from "../services/authService";
+import { analytics } from "../services/analyticsService";
 
 type Toast = { id: number; message: string };
 type Store = {
@@ -13,11 +18,13 @@ type Store = {
   wishlist: Product[];
   toasts: Toast[];
   isAuthenticated: boolean;
+  authStatus: SessionStatus;
+  user?: User;
   addToCart: (p: Product) => void;
   toggleWishlist: (p: Product) => void;
   removeFromCart: (id: string) => void;
   notify: (message: string) => void;
-  login: () => void;
+  login: (user?: User) => void;
   logout: () => void;
 };
 const Ctx = createContext<Store | null>(null);
@@ -25,7 +32,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<Product[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const [isAuthenticated, setAuth] = useState(false);
+  const [authStatus, setAuthStatus] = useState<SessionStatus>("loading");
+  const [user, setUser] = useState<User>();
+  useEffect(() => {
+    const session = sessionService.initialize();
+    setUser(session.user);
+    setAuthStatus(session.sessionStatus);
+    analytics.track("SESSION_RESTORED", { authenticated: session.sessionStatus === "authenticated" });
+  }, []);
   const toast = (message: string) => {
     const id = Date.now();
     setToasts((t) => [...t, { id, message }]);
@@ -36,7 +50,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       cart,
       wishlist,
       toasts,
-      isAuthenticated,
+      isAuthenticated: authStatus === "authenticated",
+      authStatus,
+      user,
       addToCart: (p) => {
         setCart((c) => [...c, p]);
         toast("Added to bag");
@@ -49,13 +65,25 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }),
       removeFromCart: (id) => setCart((c) => c.filter((x) => x.id !== id)),
       notify: (message) => toast(message),
-      login: () => {
-        setAuth(true);
+      login: (authenticatedUser) => {
+        if (authenticatedUser) setUser(authenticatedUser);
+        setAuthStatus("authenticated");
         toast("Login successful");
       },
-      logout: () => setAuth(false),
+      logout: () => {
+        analytics.track("LOGOUT_STARTED", {});
+        void authService.logout().then(() => {
+          setUser(undefined);
+          setAuthStatus("unauthenticated");
+          analytics.track("LOGOUT_SUCCESS", {});
+          toast("You have been signed out");
+        }).catch(() => {
+          analytics.track("LOGOUT_FAILED", { code: "SERVER_ERROR" });
+          toast("We couldn't sign you out. Please try again.");
+        });
+      },
     }),
-    [cart, wishlist, toasts, isAuthenticated],
+    [cart, wishlist, toasts, authStatus, user],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
