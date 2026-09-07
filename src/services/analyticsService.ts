@@ -36,6 +36,17 @@ export type AnalyticsEvent =
   | "PROFILE_UPDATE_STARTED"
   | "PROFILE_UPDATE_SUCCESS"
   | "PROFILE_UPDATE_FAILED"
+  | "ADDRESS_LIST_VIEWED"
+  | "ADDRESS_ADD_STARTED"
+  | "ADDRESS_ADD_SUCCESS"
+  | "ADDRESS_ADD_FAILED"
+  | "ADDRESS_EDIT_STARTED"
+  | "ADDRESS_EDIT_SUCCESS"
+  | "ADDRESS_EDIT_FAILED"
+  | "ADDRESS_DELETE_STARTED"
+  | "ADDRESS_DELETE_SUCCESS"
+  | "ADDRESS_DELETE_FAILED"
+  | "ADDRESS_DEFAULT_SET"
 
 export type AnalyticsPayload = {
   PRODUCT_VIEWED: { productId: string }
@@ -75,6 +86,17 @@ export type AnalyticsPayload = {
   PROFILE_UPDATE_STARTED: Record<string, never>
   PROFILE_UPDATE_SUCCESS: { userId: string }
   PROFILE_UPDATE_FAILED: { code: string }
+  ADDRESS_LIST_VIEWED: Record<string, never>
+  ADDRESS_ADD_STARTED: Record<string, never>
+  ADDRESS_ADD_SUCCESS: { addressId: string }
+  ADDRESS_ADD_FAILED: { code: string }
+  ADDRESS_EDIT_STARTED: { addressId: string }
+  ADDRESS_EDIT_SUCCESS: { addressId: string }
+  ADDRESS_EDIT_FAILED: { addressId: string; code: string }
+  ADDRESS_DELETE_STARTED: { addressId: string }
+  ADDRESS_DELETE_SUCCESS: { addressId: string }
+  ADDRESS_DELETE_FAILED: { addressId: string; code: string }
+  ADDRESS_DEFAULT_SET: { addressId: string }
 }
 
 export const analytics = {
