@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { products } from "../mock/products";
 import ProductGrid from "../components/product/ProductGrid";
+import { ProductGridSkeleton } from "../components/common/Skeleton";
+import { productService } from "../services/productService";
+import type { Product } from "../types/product";
+import SEO from "../components/seo/SEO";
 
 const cats = [
   ["MEN", "/men"],
@@ -12,9 +16,28 @@ const cats = [
 ];
 
 export default function HomePage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    void productService.getAll().then((result) => {
+      if (active) setProducts(result);
+    }).finally(() => {
+      if (active) setLoading(false);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <>
+      <SEO
+        title="NOVA — Fashion & Lifestyle"
+        description="Discover elevated fashion, beauty, home and lifestyle essentials at NOVA."
+        canonicalPath="/"
+      />
       <section className="hero">
         <div className="container hero-content">
           <div>
@@ -63,7 +86,7 @@ export default function HomePage() {
             </div>
             <Link to="/search">VIEW ALL</Link>
           </div>
-          <ProductGrid products={products.slice(0, 8)} />
+          {loading ? <ProductGridSkeleton count={8} /> : <ProductGrid products={products.slice(0, 8)} />}
         </div>
       </section>
       <section className="sale">
@@ -85,7 +108,7 @@ export default function HomePage() {
             <h2>Fresh into NOVA</h2>
           </div>
         </div>
-        <ProductGrid products={products.slice(8, 16)} />
+        {loading ? <ProductGridSkeleton count={8} /> : <ProductGrid products={products.slice(8, 16)} />}
       </section>
       <section className="editorial">
         <div className="container">
