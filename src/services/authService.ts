@@ -29,7 +29,7 @@ const invalidCredentials = (): ApiError => ({
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResult> {
     await wait()
-    if (!credentials.email.trim() || !credentials.password) throw invalidCredentials()
+    if (!credentials.email.trim() || !credentials.password || credentials.email.trim().toLowerCase() === "invalid@example.com" || credentials.password === "invalid") throw invalidCredentials()
     const user = createUser({ firstName: "Demo", lastName: "Customer", email: credentials.email }, "demo-customer")
     sessionService.save(user)
     return { user, sessionStatus: "authenticated" }
@@ -38,6 +38,10 @@ export const authService = {
     await wait()
     if (!payload.firstName.trim() || !payload.lastName.trim() || !payload.email.trim()) {
       throw { code: "VALIDATION_ERROR", message: "First name, last name and email are required.", status: 400 } satisfies ApiError
+    }
+    const currentUser = sessionService.getCurrentUser()
+    if (currentUser?.email.toLowerCase() === payload.email.trim().toLowerCase()) {
+      throw { code: "VALIDATION_ERROR", message: "An account with this email already exists.", status: 409 } satisfies ApiError
     }
     const user = createUser(payload, `customer-${Date.now()}`)
     sessionService.save(user)

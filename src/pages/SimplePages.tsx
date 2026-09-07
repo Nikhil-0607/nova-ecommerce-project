@@ -90,30 +90,11 @@ export function Account() {
       ) : (
         <div className="panel">
           <h2>Sign in to continue</h2>
-          <button className="btn" onClick={login}>
+          <button className="btn" onClick={() => login()}>
             MOCK LOGIN
           </button>
         </div>
       )}
-    </section>
-  );
-}
-export function Orders() {
-  return (
-    <section className="section container">
-      <h1>Orders</h1>
-      {["NV10234", "NV10211", "NV10198"].map((id, i) => (
-        <div className="order-card" key={id}>
-          <div>
-            <b>Order #{id}</b>
-            <p>
-              {i + 1} Items · ₹{(3499 + i * 700).toLocaleString()}
-            </p>
-          </div>
-          <span className="status">Delivered</span>
-          <Link to={`/orders/${id}`}>VIEW DETAILS →</Link>
-        </div>
-      ))}
     </section>
   );
 }

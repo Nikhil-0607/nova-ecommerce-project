@@ -8,13 +8,19 @@ import BrandDirectoryPage from "../pages/BrandDirectoryPage";
 import BrandPage from "../pages/BrandPage";
 import ProductPage from "../pages/ProductPage";
 import CategoryLandingPage from "../pages/CategoryLandingPage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
+import AccountPage from "../pages/AccountPage";
+import AccountAddressesPage from "../pages/AccountAddressesPage";
 import WishlistPage from "../pages/WishlistPage";
 import CartPage from "../pages/CartPage";
+import CheckoutPage from "../pages/CheckoutPage";
+import OrdersPage from "../pages/OrdersPage";
+import OrderDetailPage from "../pages/OrderDetailPage";
 import {
-  Checkout,
   Offers,
   Account,
-  Orders,
   Help,
   Seller,
   Admin,
@@ -40,26 +46,24 @@ export default function App() {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/brands" element={<BrandDirectoryPage />} />
           <Route path="/brand/:brandId" element={<BrandPage />} />
-          <Route path="/account/*" element={<Account />} />
-          <Route path="/orders" element={<Orders />} />
+          <Route path="/account/addresses" element={<ProtectedRoute><AccountAddressesPage /></ProtectedRoute>} />
+          <Route path="/account/*" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+          <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
           <Route
             path="/orders/:orderId"
-            element={<Placeholder title="Order Details" />}
+            element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>}
           />
           <Route
             path="/notifications"
             element={<Placeholder title="Notifications" />}
           />
           <Route path="/help" element={<Help />} />
-          <Route path="/login" element={<Account />} />
-          <Route
-            path="/register"
-            element={<Placeholder title="Create Account" />}
-          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route
             path="/forgot-password"
             element={<Placeholder title="Forgot Password" />}
