@@ -7,6 +7,25 @@ export type AnalyticsEvent =
   | "ADD_TO_CART"
   | "CATEGORY_VIEWED"
   | "BRAND_VIEWED"
+  | "LOGIN_STARTED"
+  | "LOGIN_SUCCESS"
+  | "LOGIN_FAILED"
+  | "REGISTRATION_STARTED"
+  | "REGISTRATION_SUCCESS"
+  | "LOGOUT"
+  | "WISHLIST_ADDED"
+  | "WISHLIST_REMOVED"
+  | "CART_ITEM_ADDED"
+  | "CART_ITEM_REMOVED"
+  | "CART_QUANTITY_CHANGED"
+  | "CART_VIEWED"
+  | "COUPON_APPLIED"
+  | "COUPON_REMOVED"
+  | "ADDRESS_ADDED"
+  | "ADDRESS_UPDATED"
+  | "ADDRESS_DELETED"
+  | "PROFILE_UPDATED"
+  | "PASSWORD_CHANGED"
 
 export type AnalyticsPayload = {
   PRODUCT_VIEWED: { productId: string }
@@ -17,6 +36,25 @@ export type AnalyticsPayload = {
   ADD_TO_CART: { productId: string }
   CATEGORY_VIEWED: { categoryId: string }
   BRAND_VIEWED: { brandId: string }
+  LOGIN_STARTED: Record<string, never>
+  LOGIN_SUCCESS: { userId: string }
+  LOGIN_FAILED: { code: string }
+  REGISTRATION_STARTED: Record<string, never>
+  REGISTRATION_SUCCESS: { userId: string }
+  LOGOUT: { userId?: string }
+  WISHLIST_ADDED: { productId: string; variantId?: string }
+  WISHLIST_REMOVED: { productId: string; variantId?: string }
+  CART_ITEM_ADDED: { productId: string; variantId?: string; quantity: number }
+  CART_ITEM_REMOVED: { productId: string; variantId?: string }
+  CART_QUANTITY_CHANGED: { productId: string; variantId?: string; quantity: number }
+  CART_VIEWED: { itemCount: number }
+  COUPON_APPLIED: { code: string }
+  COUPON_REMOVED: { code: string }
+  ADDRESS_ADDED: { addressId: string }
+  ADDRESS_UPDATED: { addressId: string }
+  ADDRESS_DELETED: { addressId: string }
+  PROFILE_UPDATED: { userId: string }
+  PASSWORD_CHANGED: { userId: string }
 }
 
 export const analytics = {
