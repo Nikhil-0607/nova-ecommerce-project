@@ -2,14 +2,17 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "../components/layout/Layout";
 import HomePage from "../pages/HomePage";
 import ListingPage from "../pages/ListingPage";
+import ProductListingPage from "../pages/ProductListingPage";
 import SearchPage from "../pages/SearchPage";
+import BrandDirectoryPage from "../pages/BrandDirectoryPage";
+import BrandPage from "../pages/BrandPage";
 import ProductPage from "../pages/ProductPage";
+import CategoryLandingPage from "../pages/CategoryLandingPage";
 import WishlistPage from "../pages/WishlistPage";
 import CartPage from "../pages/CartPage";
 import {
   Checkout,
   Offers,
-  Brands,
   Account,
   Orders,
   Help,
@@ -28,15 +31,19 @@ export default function App() {
           <Route path="/kids" element={<ListingPage />} />
           <Route path="/home" element={<ListingPage />} />
           <Route path="/beauty" element={<ListingPage />} />
-          <Route path="/category/:categoryId" element={<ListingPage />} />
+          <Route path="/products" element={<ProductListingPage />} />
+          <Route path="/products/:categoryId" element={<ProductListingPage />} />
+          <Route path="/category/:categoryId" element={<CategoryLandingPage />} />
+          <Route path="/category/:categoryId/:subcategoryId" element={<ProductListingPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/product/:productId/reviews" element={<ProductPage />} />
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/offers" element={<Offers />} />
-          <Route path="/brands" element={<Brands />} />
-          <Route path="/brand/:brandId" element={<SearchPage />} />
+          <Route path="/brands" element={<BrandDirectoryPage />} />
+          <Route path="/brand/:brandId" element={<BrandPage />} />
           <Route path="/account/*" element={<Account />} />
           <Route path="/orders" element={<Orders />} />
           <Route

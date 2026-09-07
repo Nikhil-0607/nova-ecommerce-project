@@ -16,6 +16,7 @@ type Store = {
   addToCart: (p: Product) => void;
   toggleWishlist: (p: Product) => void;
   removeFromCart: (id: string) => void;
+  notify: (message: string) => void;
   login: () => void;
   logout: () => void;
 };
@@ -47,6 +48,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           return exists ? w.filter((x) => x.id !== p.id) : [...w, p];
         }),
       removeFromCart: (id) => setCart((c) => c.filter((x) => x.id !== id)),
+      notify: (message) => toast(message),
       login: () => {
         setAuth(true);
         toast("Login successful");
