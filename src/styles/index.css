@@ -1155,6 +1155,68 @@ em {
   margin: 0;
   text-align: center;
 }
+.account-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+.account-nav {
+  position: sticky;
+  top: 110px;
+}
+.account-nav nav {
+  display: grid;
+  gap: 4px;
+  margin-top: 18px;
+}
+.account-nav a {
+  padding: 12px 14px;
+  border-left: 2px solid transparent;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+.account-nav a:hover,
+.account-nav a.active {
+  color: var(--text);
+  border-left-color: var(--accent);
+  background: rgba(162, 58, 42, 0.06);
+}
+.account-section h1 {
+  font: 700 48px Georgia, serif;
+  margin: 8px 0;
+}
+.account-intro,
+.profile-help,
+.profile-optional {
+  color: var(--muted);
+}
+.account-intro {
+  margin: 0 0 28px;
+}
+.account-section .panel {
+  max-width: 720px;
+}
+.account-section .panel h2 {
+  margin-top: 0;
+  font-family: Georgia, serif;
+}
+.profile-form {
+  margin-top: 22px;
+}
+.profile-help {
+  font-size: 12px;
+  margin: 0;
+}
+.profile-optional {
+  font-size: 11px;
+  font-weight: 400;
+}
+.account-loading {
+  display: grid;
+  gap: 14px;
+}
 .cart-layout {
   display: grid;
   grid-template-columns: 1fr 360px;
@@ -1662,6 +1724,12 @@ em {
   .auth-card { padding: 28px 20px; }
   .auth-card h1 { font-size: 34px; }
   .auth-form-row { grid-template-columns: 1fr; gap: 16px; }
+  .account-layout { grid-template-columns: 1fr; gap: 24px; }
+  .account-nav { position: static; }
+  .account-nav nav { display: flex; overflow-x: auto; gap: 2px; }
+  .account-nav a { white-space: nowrap; border-left: 0; border-bottom: 2px solid transparent; }
+  .account-nav a:hover, .account-nav a.active { border-left: 0; border-bottom-color: var(--accent); }
+  .account-section h1 { font-size: 38px; }
   .review-summary { grid-template-columns: 1fr; gap: 18px; }
   .review-controls { justify-content: stretch; flex-direction: column; }
   .review-controls select { width: 100%; }

@@ -32,6 +32,10 @@ export type AnalyticsEvent =
   | "LOGOUT_SUCCESS"
   | "LOGOUT_FAILED"
   | "PROTECTED_ROUTE_REDIRECTED"
+  | "ACCOUNT_VIEWED"
+  | "PROFILE_UPDATE_STARTED"
+  | "PROFILE_UPDATE_SUCCESS"
+  | "PROFILE_UPDATE_FAILED"
 
 export type AnalyticsPayload = {
   PRODUCT_VIEWED: { productId: string }
@@ -67,6 +71,10 @@ export type AnalyticsPayload = {
   LOGOUT_SUCCESS: Record<string, never>
   LOGOUT_FAILED: { code: string }
   PROTECTED_ROUTE_REDIRECTED: { path: string }
+  ACCOUNT_VIEWED: Record<string, never>
+  PROFILE_UPDATE_STARTED: Record<string, never>
+  PROFILE_UPDATE_SUCCESS: { userId: string }
+  PROFILE_UPDATE_FAILED: { code: string }
 }
 
 export const analytics = {

@@ -25,6 +25,7 @@ type Store = {
   removeFromCart: (id: string) => void;
   notify: (message: string) => void;
   login: (user?: User) => void;
+  updateUser: (user: User) => void;
   logout: () => void;
 };
 const Ctx = createContext<Store | null>(null);
@@ -69,6 +70,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         if (authenticatedUser) setUser(authenticatedUser);
         setAuthStatus("authenticated");
         toast("Login successful");
+      },
+      updateUser: (updatedUser) => {
+        if (authStatus === "authenticated") setUser(updatedUser);
       },
       logout: () => {
         analytics.track("LOGOUT_STARTED", {});
