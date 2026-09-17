@@ -10,6 +10,14 @@ export type ApiErrorCode =
   | "COUPON_EXPIRED"
   | "RATE_LIMITED"
   | "SERVER_ERROR"
+  | "CHECKOUT_EXPIRED"
+  | "ADDRESS_UNSERVICEABLE"
+  | "DELIVERY_UNAVAILABLE"
+  | "PRICE_CHANGED"
+  | "INVENTORY_CHANGED"
+  | "PAYMENT_FAILED"
+  | "PAYMENT_PENDING"
+  | "ORDER_CREATION_FAILED"
 
 export type ApiFieldError = {
   field: string
@@ -21,4 +29,6 @@ export type ApiError = {
   message: string
   status: number
   fieldErrors?: ApiFieldError[]
+  recoveryAction?: string
+  retryable?: boolean
 }

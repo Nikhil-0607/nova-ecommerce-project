@@ -1,26 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useStore } from "../context/StoreContext";
-export function Checkout() {
-  return (
-    <section className="section container">
-      <h1>Checkout</h1>
-      <div className="steps">
-        <b>1 Address</b>
-        <span>→</span>
-        <b>2 Delivery</b>
-        <span>→</span>
-        <b>3 Payment</b>
-        <span>→</span>
-        <b>4 Confirmation</b>
-      </div>
-      <div className="panel">
-        <h2>Payment placeholder</h2>
-        <p>UPI · Card · Net Banking · Wallet · Cash on Delivery</p>
-        <p>No real payment gateway is connected in Phase 1.</p>
-      </div>
-    </section>
-  );
-}
 export function Offers() {
   return (
     <section className="section container">
@@ -127,7 +106,7 @@ export function Seller() {
         <span className="eyebrow">NOVA BUSINESS</span>
         <h1>GROW YOUR BUSINESS WITH NOVA</h1>
         <p>Reach millions of customers with a premium digital storefront.</p>
-        <Link className="btn" to="/seller/dashboard">
+        <Link className="btn" to="/seller/onboarding">
           START SELLING
         </Link>
       </div>

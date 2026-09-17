@@ -60,4 +60,7 @@ export type Product = {
   delivery: DeliveryInfo
   createdAt: string
   updatedAt: string
+  sellerId?: string
+  sellerName?: string
+  approvalStatus?: "DRAFT" | "PENDING_REVIEW" | "APPROVED" | "REJECTED"
 }

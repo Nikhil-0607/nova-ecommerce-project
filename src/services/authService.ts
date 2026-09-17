@@ -30,7 +30,8 @@ export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResult> {
     await wait()
     if (!credentials.email.trim() || !credentials.password || credentials.email.trim().toLowerCase() === "invalid@example.com" || credentials.password === "invalid") throw invalidCredentials()
-    const user = createUser({ firstName: "Demo", lastName: "Customer", email: credentials.email }, "demo-customer")
+      const role = credentials.email.toLowerCase().includes("admin") ? "ADMIN" : credentials.email.toLowerCase().includes("seller") ? "SELLER" : "CUSTOMER"
+      const user = { ...createUser({ firstName: role === "SELLER" ? "Demo Seller" : role === "ADMIN" ? "Demo Admin" : "Demo", lastName: "User", email: credentials.email }, role === "SELLER" ? "demo-seller" : role === "ADMIN" ? "demo-admin" : "demo-customer"), role } as User
     sessionService.save(user)
     return { user, sessionStatus: "authenticated" }
   },

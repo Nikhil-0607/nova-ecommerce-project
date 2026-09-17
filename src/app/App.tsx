@@ -18,6 +18,14 @@ import CartPage from "../pages/CartPage";
 import CheckoutPage from "../pages/CheckoutPage";
 import OrdersPage from "../pages/OrdersPage";
 import OrderDetailPage from "../pages/OrderDetailPage";
+import { CheckoutProvider } from "../context/CheckoutContext";
+import PostPurchasePage from "../pages/PostPurchasePage";
+import SellerDashboardPage from "../pages/SellerDashboardPage";
+import AdminDashboardPage from "../pages/AdminDashboardPage";
+import RoleGuard from "../components/auth/RoleGuard";
+import SellerOnboardingPage from "../pages/SellerOnboardingPage";
+import AccountEngagementPage from "../pages/AccountEngagementPage";
+import AdminMarketingPage from "../pages/AdminMarketingPage";
 import {
   Offers,
   Account,
@@ -46,17 +54,20 @@ export default function App() {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+          <Route path="/checkout/*" element={<ProtectedRoute><CheckoutProvider><CheckoutPage /></CheckoutProvider></ProtectedRoute>} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/brands" element={<BrandDirectoryPage />} />
           <Route path="/brand/:brandId" element={<BrandPage />} />
           <Route path="/account/addresses" element={<ProtectedRoute><AccountAddressesPage /></ProtectedRoute>} />
+          <Route path="/account/preferences" element={<ProtectedRoute><AccountEngagementPage /></ProtectedRoute>} />
+          <Route path="/account/engagement" element={<ProtectedRoute><AccountEngagementPage /></ProtectedRoute>} />
           <Route path="/account/*" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
           <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
           <Route
             path="/orders/:orderId"
             element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>}
           />
+          <Route path="/orders/:orderId/:action" element={<ProtectedRoute><PostPurchasePage /></ProtectedRoute>} />
           <Route
             path="/notifications"
             element={<Placeholder title="Notifications" />}
@@ -77,12 +88,14 @@ export default function App() {
             element={<Placeholder title="Reset Password" />}
           />
           <Route path="/seller" element={<Seller />} />
-          <Route
-            path="/seller/dashboard"
-            element={<Placeholder title="Seller Dashboard" />}
-          />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/*" element={<Admin />} />
+          <Route path="/seller/onboarding" element={<ProtectedRoute><SellerOnboardingPage /></ProtectedRoute>} />
+          <Route path="/returns" element={<Placeholder title="Returns & Exchanges" />} />
+          <Route path="/privacy" element={<Placeholder title="Privacy Policy" />} />
+          <Route path="/terms" element={<Placeholder title="Terms & Conditions" />} />
+          <Route path="/seller/dashboard" element={<RoleGuard roles={["SELLER", "ADMIN"]}><SellerDashboardPage /></RoleGuard>} />
+          <Route path="/admin" element={<RoleGuard roles={["ADMIN"]}><AdminDashboardPage /></RoleGuard>} />
+          <Route path="/admin/marketing" element={<RoleGuard roles={["ADMIN"]}><AdminMarketingPage /></RoleGuard>} />
+          <Route path="/admin/*" element={<RoleGuard roles={["ADMIN"]}><AdminDashboardPage /></RoleGuard>} />
           <Route
             path="*"
             element={<Placeholder title="404 — Page not found" />}

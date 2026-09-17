@@ -71,6 +71,7 @@ const toItem = (
 ): CartItem => ({
   id: getCartItemKey(product.id, variant?.id),
   productId: product.id,
+  ...(product.sellerId ? { sellerId: product.sellerId } : {}),
   ...(variant ? { variantId: variant.id } : {}),
   sku: variant?.sku ?? product.sku,
   productName: product.name,
