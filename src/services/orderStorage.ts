@@ -7,6 +7,8 @@ import type {
   OrderStatus,
   PaymentStatus,
 } from "../types/order"
+import type { CheckoutCoupon, CheckoutPricing, DeliveryOption } from "../types/checkout"
+import type { PaymentMethod } from "../types/payment"
 import type { StockStatus } from "../types/product"
 import { storageService } from "./storageService"
 
@@ -68,6 +70,7 @@ const normalizeItem = (value: unknown): OrderItem | undefined => {
   if (value.stockStatus !== undefined && !isStockStatus(value.stockStatus)) return undefined
   return {
     productId: value.productId as string,
+    ...(typeof value.sellerId === "string" ? { sellerId: value.sellerId } : {}),
     ...(typeof value.variantId === "string" ? { variantId: value.variantId } : {}),
     sku: value.sku as string,
     productName: value.productName as string,
@@ -98,6 +101,23 @@ const normalizePayment = (value: unknown): OrderPaymentMetadata | undefined => {
   return {
     ...(typeof value.method === "string" ? { method: value.method } : {}),
     ...(typeof value.providerReference === "string" ? { providerReference: value.providerReference } : {}),
+    ...(isPaymentStatus(value.status) ? { status: value.status } : {}),
+  }
+}
+
+const normalizeCheckout = (value: unknown): CheckoutPricing | undefined => {
+  if (!isRecord(value)) return undefined
+  const keys = ["totalMRP", "productDiscount", "couponDiscount", "deliveryFee", "tax", "convenienceFee", "total"]
+  if (keys.some((key) => !isNonNegativeNumber(value[key])) || typeof value.currency !== "string") return undefined
+  return {
+    totalMRP: value.totalMRP as number,
+    productDiscount: value.productDiscount as number,
+    couponDiscount: value.couponDiscount as number,
+    deliveryFee: value.deliveryFee as number,
+    tax: value.tax as number,
+    convenienceFee: value.convenienceFee as number,
+    total: value.total as number,
+    currency: value.currency,
   }
 }
 
@@ -120,6 +140,7 @@ const normalizeOrder = (value: unknown, userId: string): Order | undefined => {
   if (!isNonNegativeNumber(subtotal) || !isNonNegativeNumber(discount) || !isNonNegativeNumber(deliveryFee) || !isNonNegativeNumber(tax) || !isNonNegativeNumber(total)) return undefined
   const delivery = normalizeMetadata(value.delivery)
   const payment = normalizePayment(value.payment)
+  const checkoutPricing = normalizeCheckout(value.checkoutPricing)
   return {
     id: value.id as string,
     orderNumber: value.orderNumber as string,
@@ -138,6 +159,16 @@ const normalizeOrder = (value: unknown, userId: string): Order | undefined => {
     updatedAt: value.updatedAt as string,
     ...(delivery ? { delivery } : {}),
     ...(payment ? { payment } : {}),
+    ...(checkoutPricing ? { checkoutPricing } : {}),
+    ...(isRecord(value.coupon) && typeof value.coupon.code === "string" && isNonNegativeNumber(value.coupon.discountAmount)
+      ? { coupon: value.coupon as CheckoutCoupon } : {}),
+    ...(isRecord(value.deliveryOption) && typeof value.deliveryOption.id === "string"
+      ? { deliveryOption: value.deliveryOption as DeliveryOption } : {}),
+    ...(value.paymentMethod === "CARD" || value.paymentMethod === "UPI" || value.paymentMethod === "NET_BANKING" || value.paymentMethod === "WALLET" || value.paymentMethod === "COD"
+      ? { paymentMethod: value.paymentMethod as PaymentMethod } : {}),
+    ...(typeof value.checkoutSessionId === "string" ? { checkoutSessionId: value.checkoutSessionId } : {}),
+    ...(typeof value.paymentAttemptId === "string" ? { paymentAttemptId: value.paymentAttemptId } : {}),
+    ...(typeof value.idempotencyKey === "string" ? { idempotencyKey: value.idempotencyKey } : {}),
   }
 }
 

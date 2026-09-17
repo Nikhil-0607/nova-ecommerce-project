@@ -3,6 +3,7 @@ import type { StockStatus } from "./product"
 export type CartItem = {
   id: string
   productId: string
+  sellerId?: string
   variantId?: string
   sku: string
   productName: string

@@ -53,6 +53,35 @@ export type AnalyticsEvent =
   | "WISHLIST_CLEARED"
   | "WISHLIST_MERGED"
   | "WISHLIST_MERGE_FAILED"
+  | "CHECKOUT_STARTED"
+  | "CHECKOUT_ADDRESS_SELECTED"
+  | "CHECKOUT_DELIVERY_SELECTED"
+  | "CHECKOUT_REVIEWED"
+  | "PAYMENT_INITIATED"
+  | "PAYMENT_SUCCEEDED"
+  | "PAYMENT_FAILED"
+  | "PAYMENT_PENDING"
+  | "ORDER_CREATED"
+  | "ORDER_CONFIRMED"
+  | "CHECKOUT_ABANDONED"
+  | "ORDER_VIEWED"
+  | "TRACK_ORDER_CLICKED"
+  | "CANCEL_ORDER_STARTED"
+  | "RETURN_STARTED"
+  | "EXCHANGE_STARTED"
+  | "INVOICE_VIEWED"
+  | "BUY_AGAIN_CLICKED"
+  | "SUPPORT_REQUESTED"
+  | "REFUND_VIEWED"
+  | "PREFERENCE_UPDATED"
+  | "CONSENT_UPDATED"
+  | "ALERT_CREATED"
+  | "LOYALTY_POINTS_EARNED"
+  | "MEMBERSHIP_JOINED"
+  | "CAMPAIGN_CREATED"
+  | "CAMPAIGN_LAUNCHED"
+  | "JOURNEY_ACTIVATED"
+  | "EXPERIMENT_ACTIVATED"
 
 export type AnalyticsPayload = {
   PRODUCT_VIEWED: { productId: string }
@@ -109,13 +138,55 @@ export type AnalyticsPayload = {
   WISHLIST_CLEARED: Record<string, never>
   WISHLIST_MERGED: { itemCount: number }
   WISHLIST_MERGE_FAILED: { code: string }
+  CHECKOUT_STARTED: { itemCount: number }
+  CHECKOUT_ADDRESS_SELECTED: { addressId: string }
+  CHECKOUT_DELIVERY_SELECTED: { deliveryOptionId: string }
+  CHECKOUT_REVIEWED: Record<string, never>
+  PAYMENT_INITIATED: { method: string }
+  PAYMENT_SUCCEEDED: Record<string, never>
+  PAYMENT_FAILED: { code: string }
+  PAYMENT_PENDING: Record<string, never>
+  ORDER_CREATED: { orderId: string }
+  ORDER_CONFIRMED: { orderId: string }
+  CHECKOUT_ABANDONED: Record<string, never>
+  ORDER_VIEWED: { orderId: string }
+  TRACK_ORDER_CLICKED: { orderId: string }
+  CANCEL_ORDER_STARTED: { orderId: string }
+  RETURN_STARTED: { orderId: string }
+  EXCHANGE_STARTED: { orderId: string }
+  INVOICE_VIEWED: { orderId: string }
+  BUY_AGAIN_CLICKED: { orderId: string; productId: string }
+  SUPPORT_REQUESTED: { orderId: string }
+  REFUND_VIEWED: { orderId: string }
+  PREFERENCE_UPDATED: Record<string, never>
+  CONSENT_UPDATED: { email: boolean; push: boolean; personalizedRecommendations: boolean }
+  ALERT_CREATED: { type: string }
+  LOYALTY_POINTS_EARNED: { points: number }
+  MEMBERSHIP_JOINED: { planId: string }
+  CAMPAIGN_CREATED: { campaignId: string }
+  CAMPAIGN_LAUNCHED: { campaignId: string }
+  JOURNEY_ACTIVATED: { journeyId: string }
+  EXPERIMENT_ACTIVATED: { experimentId: string }
 }
 
+export type AnalyticsProvider = {
+  track<TEvent extends AnalyticsEvent>(event: TEvent, payload: AnalyticsPayload[TEvent]): void
+}
+
+const noopProvider: AnalyticsProvider = {
+  track: () => undefined,
+}
+
+let provider: AnalyticsProvider = noopProvider
+
 export const analytics = {
+  setProvider(nextProvider: AnalyticsProvider): void {
+    provider = nextProvider
+  },
   track<TEvent extends AnalyticsEvent>(
-    _event: TEvent,
-    _payload: AnalyticsPayload[TEvent],
+    event: TEvent,
+    payload: AnalyticsPayload[TEvent],
   ): void {
-    // Intentionally no-op until a first-party analytics provider is selected.
+    provider.track(event, payload)
   },
 }

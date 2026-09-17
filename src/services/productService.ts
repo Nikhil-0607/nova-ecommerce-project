@@ -1,5 +1,6 @@
 import { products } from '../mock/products'
 import type { Product } from '../types/product'
+import { sellerService } from './sellerService'
 
 const wait = (ms = 180) => new Promise((r) => setTimeout(r, ms))
 
@@ -33,26 +34,26 @@ const matchesQuery = (product: Product, query: ProductQuery): boolean => {
 }
 
 export const productService = {
-  async getAll(): Promise<Product[]> { await wait(); return products },
-  async getById(id: string): Promise<Product | undefined> { await wait(); return products.find(p => p.id === id || p.slug === id) },
+  async getAll(): Promise<Product[]> { await wait(); return sellerService.getPublicProducts() },
+  async getById(id: string): Promise<Product | undefined> { await wait(); return sellerService.getPublicProducts().find(p => p.id === id || p.slug === id) },
   async byCategory(category: string): Promise<Product[]> {
     await wait()
     const normalized = category.toLowerCase()
-    return products.filter(p => p.category.toLowerCase() === normalized || p.categoryId.toLowerCase() === normalized)
+    return sellerService.getPublicProducts().filter(p => p.category.toLowerCase() === normalized || p.categoryId.toLowerCase() === normalized)
   },
   async search(q: string): Promise<Product[]> {
     await wait()
-    return products.filter((product) => matchesQuery(product, { query: q }))
+    return sellerService.getPublicProducts().filter((product) => matchesQuery(product, { query: q }))
   },
   async getProducts(query: ProductQuery = {}): Promise<Product[]> {
     await wait()
-    const filtered = products.filter((product) => matchesQuery(product, query))
+    const filtered = sellerService.getPublicProducts().filter((product) => matchesQuery(product, query))
     const start = query.offset ?? 0
     const end = query.limit === undefined ? undefined : start + query.limit
     return filtered.slice(start, end)
   },
   async getProductById(id: string): Promise<Product | undefined> {
     await wait()
-    return products.find((product) => product.id === id || product.slug === id)
+    return sellerService.getPublicProducts().find((product) => product.id === id || product.slug === id)
   },
 }

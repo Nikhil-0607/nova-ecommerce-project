@@ -6,6 +6,31 @@ export type FeatureFlags = {
   enableSocialLogin: boolean
   enablePhoneAuth: boolean
   enableBackInStockAlerts: boolean
+  enableCheckout: boolean
+  enableCOD: boolean
+  enableUPI: boolean
+  enableWallet: boolean
+  enableExpressDelivery: boolean
+  useMockServices: boolean
+  enableMockFallback: boolean
+  enableOrderTracking: boolean
+  enableReturns: boolean
+  enableExchanges: boolean
+  enableBuyAgain: boolean
+  enableInvoiceDownload: boolean
+  enableOrderSupport: boolean
+  enablePartialReturns: boolean
+  enableMultiShipment: boolean
+  enableSellerPortal: boolean
+  enableSellerOnboarding: boolean
+  enableAdminOperations: boolean
+  enableSettlementOperations: boolean
+  enablePersonalization: boolean
+  enableEngagementAlerts: boolean
+  enableLoyalty: boolean
+  enableMembership: boolean
+  enableMarketingPortal: boolean
+  enableExperiments: boolean
 }
 
 export const featureFlags: FeatureFlags = {
@@ -16,4 +41,29 @@ export const featureFlags: FeatureFlags = {
   enableSocialLogin: false,
   enablePhoneAuth: false,
   enableBackInStockAlerts: false,
+  enableCheckout: true,
+  enableCOD: true,
+  enableUPI: true,
+  enableWallet: true,
+  enableExpressDelivery: true,
+  useMockServices: true,
+  enableMockFallback: false,
+  enableOrderTracking: true,
+  enableReturns: true,
+  enableExchanges: true,
+  enableBuyAgain: true,
+  enableInvoiceDownload: true,
+  enableOrderSupport: true,
+  enablePartialReturns: true,
+  enableMultiShipment: true,
+  enableSellerPortal: true,
+  enableSellerOnboarding: true,
+  enableAdminOperations: true,
+  enableSettlementOperations: true,
+  enablePersonalization: true,
+  enableEngagementAlerts: true,
+  enableLoyalty: true,
+  enableMembership: true,
+  enableMarketingPortal: true,
+  enableExperiments: true,
 }

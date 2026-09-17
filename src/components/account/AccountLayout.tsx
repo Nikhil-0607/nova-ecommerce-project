@@ -8,6 +8,7 @@ const sections = [
   { to: "/account/security", label: "Security" },
   { to: "/account/preferences", label: "Preferences" },
   { to: "/account/notifications", label: "Notifications" },
+  { to: "/account/engagement", label: "Engagement & rewards" },
 ]
 
 export default function AccountLayout({ children }: { children: ReactNode }) {

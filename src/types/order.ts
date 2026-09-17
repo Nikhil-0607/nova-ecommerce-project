@@ -1,4 +1,6 @@
 import type { StockStatus } from "./product"
+import type { DeliveryOption, CheckoutCoupon, CheckoutPricing } from "./checkout"
+import type { PaymentMethod } from "./payment"
 
 export type OrderStatus =
   | "pending"
@@ -12,6 +14,7 @@ export type PaymentStatus = "pending" | "paid" | "failed" | "refunded"
 
 export type OrderItem = {
   readonly productId: string
+  readonly sellerId?: string
   readonly variantId?: string
   readonly sku: string
   readonly productName: string
@@ -58,6 +61,7 @@ export type OrderDeliveryMetadata = {
 export type OrderPaymentMetadata = {
   readonly method?: string
   readonly providerReference?: string
+  readonly status?: PaymentStatus
 }
 
 export type Order = OrderTotals & {
@@ -72,4 +76,11 @@ export type Order = OrderTotals & {
   readonly updatedAt: string
   readonly delivery?: OrderDeliveryMetadata
   readonly payment?: OrderPaymentMetadata
+  readonly checkoutPricing?: CheckoutPricing
+  readonly coupon?: CheckoutCoupon
+  readonly deliveryOption?: DeliveryOption
+  readonly paymentMethod?: PaymentMethod
+  readonly checkoutSessionId?: string
+  readonly paymentAttemptId?: string
+  readonly idempotencyKey?: string
 }
